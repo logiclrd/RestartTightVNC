@@ -18,11 +18,21 @@
 
           Response.Write("Stage 1 status: " + controller.Status + "<br />");
 
-          controller.Stop();
+          if (controller.Status != ServiceControllerStatus.Stopped)
+          {
+            try
+            {
+              controller.Stop();
+            }
+            catch (Exception ex)
+            {
+              Response.Write("=> WARN: " + ex.GetType().Name + ": " + ex.Message + "<br />");
+            }
 
-          Response.Write("Stage 2 status: " + controller.Status + "<br />");
+            Response.Write("Stage 2 status: " + controller.Status + "<br />");
 
-          controller.WaitForStatus(ServiceControllerStatus.Stopped);
+            controller.WaitForStatus(ServiceControllerStatus.Stopped);
+          }
 
           Response.Write("Stage 3 status: " + controller.Status + "<br />");
 
